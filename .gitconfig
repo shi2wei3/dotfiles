@@ -1,0 +1,24 @@
+[giggle]
+	main-window-maximized = true
+	main-window-geometry = 0x0+0+0
+	history-view-vpane-position = 470
+	main-window-view = FileView
+	file-view-vpane-position = 650
+	file-view-hpane-position = 777
+[user]
+	email = wshi@redhat.com
+	name = Wei Shi
+[sendemail]
+    smtpserver = /usr/bin/msmtp
+[alias]
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
+[push]
+	default = simple
+[core]
+	editor = vim
