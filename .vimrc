@@ -32,8 +32,7 @@ au FocusLost * :set number
 au FocusGained * :set relativenumber
 autocmd InsertEnter * :set number
 autocmd InsertLeave * :set relativenumber
-nnoremap <F2> :set number! relativenumber!<CR>
-nnoremap <silent> <F3> :Rgrep<CR>
+nnoremap <F3> :set number! relativenumber!<CR>
 nnoremap <F4> :set nonumber norelativenumber<CR>
 set pastetoggle=<F5>
 au InsertLeave * set nopaste
@@ -83,46 +82,13 @@ let g:miniBufExplCycleArround=1
 Plugin 'majutsushi/tagbar'
 nmap <F9> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
-Plugin 'vim-scripts/taglist.vim'
-set tags=tags;/
-let Tlist_Ctags_Cmd="/usr/bin/ctags"
-nnoremap <silent> <F8> :TlistToggle<CR>
-let Tlist_Auto_Highlight_Tag = 1
-let Tlist_Auto_Open = 0
-let Tlist_Auto_Update = 1
-let Tlist_Close_On_Select = 0
-let Tlist_Compact_Format = 0
-let Tlist_Display_Prototype = 0
-let Tlist_Display_Tag_Scope = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_File_Fold_Auto_Close = 0
-let Tlist_GainFocus_On_ToggleOpen = 1
-let Tlist_Hightlight_Tag_On_BufEnter = 1
-let Tlist_Inc_Winwidth = 0
-let Tlist_Max_Submenu_Items = 1
-let Tlist_Max_Tag_Length = 30
-let Tlist_Process_File_Always = 0
-let Tlist_Show_Menu = 0
-let Tlist_Show_One_File = 1
-let Tlist_Sort_Type = "order"
-let Tlist_Use_Horiz_Window = 0
-let Tlist_Use_Right_Window = 0
-let Tlist_WinWidth = 25
-Plugin 'kien/ctrlp.vim'
-let g:ctrlp_map = '<leader>p'
-let g:ctrlp_cmd = 'CtrlP'
-map <leader>f :CtrlPMRU<CR>
-let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
-    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz)$',
-    \ }
-let g:ctrlp_working_path_mode=0
-let g:ctrlp_match_window_bottom=1
-let g:ctrlp_max_height=15
-let g:ctrlp_match_window_reversed=0
-let g:ctrlp_mruf_max=500
-let g:ctrlp_follow_symlinks=1
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+if executable("rg")
+    set grepprg=rg\ --vimgrep\ --no-heading
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
 Plugin 'vim-airline/vim-airline'
 let g:airline_powerline_fonts = 1
 Plugin 'kien/rainbow_parentheses.vim'
@@ -157,7 +123,7 @@ let g:solarized_termtrans=1
 let g:solarized_contrast="normal"
 let g:solarized_visibility="normal"
 Plugin 'tomasr/molokai'
-Plugin 'Lokaltog/vim-easymotion'
+Plugin 'easymotion/vim-easymotion'
 Plugin 'Valloric/YouCompleteMe'
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['<Up>']
@@ -180,28 +146,20 @@ let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 Plugin 'scrooloose/syntastic'
-let g:syntastic_error_symbol='>>'
-let g:syntastic_warning_symbol='>'
+execute pathogen#infect()
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open=1
-let g:syntastic_enable_highlighting = 0
-"let g:syntastic_python_checker="flake8,pyflakes,pep8,pylint"
-let g:syntastic_python_checkers=['pyflakes']
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers=['pyflakes', 'pylint', 'flake8', 'pep8']
 highlight SyntasticErrorSign guifg=white guibg=black
-Plugin 'kevinw/pyflakes-vim'
-let g:pyflakes_use_quickfix = 0
-Plugin 'hdima/python-syntax'
-let python_highlight_all = 1
 Plugin 'plasticboy/vim-markdown'
 let g:vim_markdown_folding_disabled=1
-Plugin 'vim-scripts/TaskList.vim'
-map <leader>td <Plug>TaskList
-Plugin 'bufexplorer.zip'
-Plugin 'grep.vim'
-Plugin 'netrw.vim'
-Plugin 'steffanc/cscopemaps.vim'
 Plugin 'airblade/vim-gitgutter'
 let g:gitgutter_max_signs = 500  " default value"
-Plugin 'vim-scripts/VisIncr'
 Plugin 'mbbill/fencview'
 
 " All of your Plugins must be added before the following line
@@ -211,12 +169,12 @@ filetype plugin indent on    " required
 " Color Theme
 """"""""""""""""""""""""""""""
 if exists('$DISPLAY')
-"    colorscheme solarized
-"    colorscheme molokai
+    colorscheme solarized
     if has('gui_running')
-        set background=dark
-    else
+        colorscheme molokai
         set background=light
+    else
+        set background=dark
     endif
 else
     colorscheme desert
@@ -224,5 +182,7 @@ endif
 """"""""""""""""""""""""""""""
 " User defined
 """"""""""""""""""""""""""""""
-"set path=.,/usr/include
+set path+=**
+set wildmenu
+command! MakeTags !ctags -R .
 ":cs add /home/john/qsweb/cscope.out /home/john/qsweb

@@ -96,9 +96,9 @@ bindsym $mod+a focus parent
 set $workspace1 "1: Terminal "
 set $workspace2 "2: Chromium "
 set $workspace3 "3: Firefox "
-set $workspace4 "4: Vncviewer "
+set $workspace4 "4: Spotify "
 set $workspace5 "5: Tor Browser "
-set $workspace9 "9: Spotify "
+set $workspace9 "9: Vncviewer "
 set $workspace10 "10: Demo "
 
 # switch to workspace
@@ -129,17 +129,20 @@ bindsym $mod+Shift+bracketleft move workspace to output left
 bindsym $mod+Shift+bracketright move workspace to output right
 
 #assign [class="Gnome-terminal"] $workspace1
-assign [class="chromium-browser"] $workspace2
+assign [class="Chromium-browser"] $workspace2
 assign [class="Firefox"] $workspace3
-assign [class="Vncviewer"] $workspace4
+for_window [class="^Spotify$"] move to workspace $workspace4
 assign [class="Tor Browser"] $workspace5
-for_window [class="^Spotify$"] move to workspace $workspace9
+assign [class="Vncviewer"] $workspace9
 
+for_window [class="URxvt"] border none
 for_window [class="Gnome-terminal"] border none
+for_window [class="Chromium-browser"] border none
 for_window [class="Firefox"] border none
 for_window [class="Tor Browser"] border none
 for_window [class="^Spotify$"] border none
-for_window [class="MPlayer"] floating enable
+for_window [class="mpv"] border none
+for_window [class="mpv"] floating enable
 
 # audio controls
 bindsym XF86AudioRaiseVolume exec amixer set Master 5%+
@@ -158,6 +161,9 @@ bindsym XF86Display exec xrandr --output HDMI1 --auto --left-of eDP1 --output eD
 bindsym XF86Search exec "sp prev"
 bindsym XF86LaunchA exec "sp play"
 bindsym XF86Explorer exec "sp next"
+
+bindsym $mod+c exec "xclip -o | xclip -selection secondary"
+bindsym --release $mod+Insert exec --no-startup-id xdotool type --clearmodifiers -- "$(xclip -o -selection secondary)"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -201,4 +207,4 @@ bar {
 bindsym Ctrl+Mod1+l exec --no-startup-id ~/bin/lock
 exec --no-startup-id ibus-daemon --xim -r -d
 exec --no-startup-id feh --bg-scale ~/Pictures/DSC01189.JPG
-exec --no-startup-id compton -b
+exec --no-startup-id xcompmgr -n
