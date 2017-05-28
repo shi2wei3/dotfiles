@@ -91,6 +91,8 @@ if executable("rg")
 endif
 Plugin 'vim-airline/vim-airline'
 let g:airline_powerline_fonts = 1
+Plugin 'vim-airline/vim-airline-themes'
+let g:airline_theme='simple'
 Plugin 'kien/rainbow_parentheses.vim'
 let g:rbpt_colorpairs = [
     \ ['brown',       'RoyalBlue3'],

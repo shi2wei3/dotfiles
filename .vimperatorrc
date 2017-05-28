@@ -1,0 +1,34 @@
+" completion for history only
+"set complete=bh
+
+" clean titlestring (Don't show 'Vimperator - ')
+set titlestring=
+
+" Don't focus input box when opening new tab
+set focuscontent
+
+" No GUI
+set gui=nonavigation
+
+" no scrollbar
+set noscrollbars
+
+" Set hintcharacter for easily reachable keys
+set hintchars=ifjkasdhguonmerwc
+
+" to prevent d on the last tab from closing the window:
+set! browser.tabs.closeWindowWithLastTab=false
+
+" Add new tab to the last
+set! browser.tabs.insertRelatedAfterCurrent=false
+
+autocmd LocationChange .* js modes.passAllKeys = /docs\.google\.com/.test(buffer.URL)
+
+"---------------------------------------------------------------------------}}}
+" Appearance                                                                {{{
+"------------------------------------------------------------------------------
+
+" set colorscheme
+" [vimpr/vimperator-colors](https://github.com/vimpr/vimperator-colors)
+"     git clone https://github.com/vimpr/vimperator-colors.git ~/.vimperator/colors
+colorscheme darkness
